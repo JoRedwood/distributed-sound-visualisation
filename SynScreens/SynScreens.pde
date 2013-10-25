@@ -1,5 +1,4 @@
 // Imports the necessary Java classes
-import org.json.*;
 import java.util.Random;
 import java.net.InetAddress;
 import java.awt.Toolkit;
@@ -40,7 +39,7 @@ Random rand = new Random(0); // Sets an initial random seed of 0
 ArrayList visualisations; // Contains all the currently running effects
 
 boolean incoming = false; // true if new data has arrived
-JSON incomingObj; // Stores the new data before use
+JSONObject incomingObj; // Stores the new data before use
 
 FrameTimer eventTimer;
 
@@ -155,7 +154,7 @@ void draw(){
     byte[] data = client.readBytesUntil(10);
     if(data != null){
       String dataIn = new String(data);
-      JSON incomingObj = JSON.parse(dataIn);
+      JSONObject incomingObj = JSONObject.parse(dataIn);
       if(visualisations.size() < 100){
         // Synchronises the random seed, resetting the random number generator
         rand.setSeed(incomingObj.getInt("pitch"));
@@ -176,7 +175,7 @@ void draw(){
 }
 
 void send(float pitch, float amplitude){
-  JSON obj = JSON.createObject();
+  JSONObject obj = new JSONObject();
   obj.setString("ip", localIP);
   obj.setString("uid", uid);
   //obj.put("offsetX", offsetX);

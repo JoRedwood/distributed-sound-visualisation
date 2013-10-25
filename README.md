@@ -3,7 +3,7 @@ distributed-sound-visualisation
 
    ===Requirements===
    
-   Processing 2.0 Beta 8 (untested on earlier)
+   Processing 2.0.3
    Microphone
    Tape measure
    Duel Core 2.0Ghz or higher
@@ -52,6 +52,7 @@ distributed-sound-visualisation
    
    ===Change Log=====
    
+   v1.2 switched to internal JSON library in new version of processing
    v1.1 added support for processing 2.0b8
    v1.0 release
    

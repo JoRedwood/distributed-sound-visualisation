@@ -1,4 +1,3 @@
-import org.json.*;
 import processing.net.*;
 
 Server server;
@@ -32,7 +31,7 @@ void draw(){
       byte[] data = client.readBytesUntil(10);
       if(data != null){
         String dataIn = new String(data);
-        JSON incomingObj = JSON.parse(dataIn);
+        JSONObject incomingObj = JSONObject.parse(dataIn);
         //println(incomingObj);
         events.add(incomingObj);
        // server.write(incomingObj.toString()+"\n"); // Just immediatly sends it out to all clients
@@ -48,13 +47,13 @@ void draw(){
     
     
     for (int i = 0; i < events.size(); i++) { 
-      JSON event = (JSON) events.get(i);
+      JSONObject event = (JSONObject) events.get(i);
   
       // Go through all the others and look for a pair
       for (int j = 0; j < events.size(); j++) { 
         // Stops it matching to itself
         if(i != j){
-          JSON matchEvent = (JSON) events.get(j);
+          JSONObject matchEvent = (JSONObject) events.get(j);
           // check for same origin and that they were not created on the server
           if(event.getString("uid") != matchEvent.getString("uid") && event.getString("uid") != "server" && matchEvent.getString("uid") != "server"){
             // check for shared pitch
@@ -62,8 +61,8 @@ void draw(){
               // Combine them and remove the originals
     
               // Determine the loudest
-              JSON loudest;
-              JSON quietest; 
+              JSONObject loudest;
+              JSONObject quietest; 
               if(event.getDouble("amplitude") > matchEvent.getDouble("amplitude")){
                 loudest = event;
                 quietest = matchEvent;
@@ -79,7 +78,7 @@ void draw(){
               float ratio = ((float)quietest.getDouble("amplitude")/(float)loudest.getDouble("amplitude"))/2;
               vbalanced = PVector.lerp(vloud, vquiet, ratio);
               
-              JSON obj = JSON.createObject();
+              JSONObject obj = new JSONObject();
               obj.setString("uid", "server");
               obj.setFloat("x", vbalanced.x);
               obj.setFloat("y", vbalanced.y);
@@ -103,7 +102,7 @@ void draw(){
     eventsSent = 0;
     for (int i = 0; i < events.size(); i++) { 
       if(eventsSent < eventLimit){
-        JSON event = (JSON) events.get(i);
+        JSONObject event = (JSONObject) events.get(i);
         server.write(event.toString().replace("\n","")+"\n");
         
         float scale = 10.0;
@@ -123,7 +122,7 @@ void draw(){
 
 /*
 void send(float pitch, float amplitude){
-  JSONObject obj = new JSONObject();
+  JSONObjectObject obj = new JSONObjectObject();
   //200 pixels in this is 20cm
   obj.put("x", (offsetX + micOffsetX)*1000);
   obj.put("y", (offsetY + micOffsetY)*1000);
